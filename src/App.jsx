@@ -1,6 +1,5 @@
 import { useState, lazy, Suspense } from "react";
-import { createRoot } from "react-dom/client";
-import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AdoptedPetContext from "./AdoptedPetContext";
 
@@ -12,6 +11,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: Infinity,
       cacheTime: Infinity,
+      suspense: true,
     },
   },
 });
@@ -20,7 +20,6 @@ const App = () => {
   const adoptedPet = useState(null);
   return (
     <div className="m-0 p-0" style={{ background: "url(http://pets-images.dev-apis.com/pets/wallpaperB.jpg)" }}>
-      <BrowserRouter>
         <AdoptedPetContext.Provider value={adoptedPet}>
           <QueryClientProvider client={queryClient}>
             <Suspense
@@ -40,11 +39,8 @@ const App = () => {
             </Suspense>
           </QueryClientProvider>
         </AdoptedPetContext.Provider>
-      </BrowserRouter>
     </div>
   );
 };
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);
+export default App;
